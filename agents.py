@@ -98,20 +98,20 @@ class Translate_Agent(AbstractAgent):
             
 class printer():
     def __init__(self):
-        self.state = 'idle'
+        self.busy = False
     
     def isIdle(self):
-        if self.state =="idle":
+        if self.busy == False:
             return True
         else:
             return False
     
     def change_state(self,customer): 
-        if self.state == "idle":
-            self.state = "busy"
-            start
+        if self.busy == False:
+            self.busy = True
+            
         else:
-            self.state = "idle"
+            self.busy = False
     
     def start_printing(self,customer):
         time.sleep(300) # takes 300 seconds to print
