@@ -1,6 +1,17 @@
 import time
+from Queue import Queue
 from datetime import date
 import assignment1
+
+## Create queues 
+global license_q
+license_q = Queue()
+global translation_q
+translation_q = Queue()
+global eye_test_q
+eye_test_q = Queue()
+global fail_q
+fail_q = Queue()
 
 class AbstractAgent(object):
     def __init__(self):
@@ -25,16 +36,17 @@ def Isconsistent(docu):
 
 class License_Agent(AbstractAgent):
     def __init__(self):
-        super(License_agent,self).__init__()
+        super(License_Agent,self).__init__()
     
     
     def check(self, customer):
         self.occupied = True
         if customer.passport == None or customer.drivers_license == None\
-         or emirates_id == None or customer.passport.expiry_date<date.today() \
+         or customer.emirates_id == None or customer.passport.expiry_date<date.today() \
          or customer.emirates_id.expiry_date<date.today() or \
          customer.drivers_license.expiry_date<date.today():
             fail_q.put(customer)
+            print "point1"
             return False
         
         if Isconsistent([customer.passport, customer.drivers_license,\
@@ -43,6 +55,7 @@ class License_Agent(AbstractAgent):
             pass
         else:
             fail_q.put(customer)
+            print "point2"
             return False
         
         return_condition = False 
@@ -51,12 +64,13 @@ class License_Agent(AbstractAgent):
             customer.eye_test = None ##Set it to None so that it issues new date
             eye_test_q.put(customer)
             return_condition = True
-            
+        
         if customer.drivers_license_translation == None:
             translation_q.put(customer)
             return_condition = True
         
         if return_condition == True:
+            print "point3"
             return False
         return True
     
@@ -90,10 +104,9 @@ class Translate_Agent(AbstractAgent):
             translation_q.put(customer)
         else:
             busy_customers.append(customer)  
-            customer.drivers_license_translation = assignment1.Drivers_License_\
-            Translation(customer.drivers_license)                                                                                       )
+            customer.drivers_license_translation = assignment1.Drivers_License_Translation(customer.drivers_license)
             time.sleep(process_time)
-            busy_customers.remove(customer))
+            busy_customers.remove(customer)
             ### Check if it is in the other queue if not, put into license queue!
             
 class printer():
