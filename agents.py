@@ -1,5 +1,6 @@
 import time
 from datetime import date
+import assignment1
 
 class AbstractAgent(object):
     def __init__(self):
@@ -47,6 +48,7 @@ class License_Agent(AbstractAgent):
         return_condition = False 
         
         if customer.eye_test == None or customer.eye_test.expiry_date < date.today():
+            customer.eye_test = None ##Set it to None so that it issues new date
             eye_test_q.put(customer)
             return_condition = True
             
@@ -66,14 +68,34 @@ class License_Agent(AbstractAgent):
 class Eye_test_Agent(AbstractAgent):
     def __init__(self):
         super(Eye_test_Agent,self).__init__()
-    ##def check(self, process_time):
-        
+    
+    def process(self,customer, process_time):
+        if customer in busy_customers:
+            eye_test_q.put(customer)
+        else:                
+            busy_customers.append(customer)
+            customer.eye_test = assignment1.EyeTest(customer.first_name, customer.last_name,\
+                                                    customer.nationality, customer.gender,\
+                                                    customer.date_of_birth,None)
+            time.sleep(process_time)
+            busy_customers.remove(customer)
+            ### Check if it is in the other queue if not, put into license queue!
     
 class Translate_Agent(AbstractAgent):
     def __init__(self):
         super(Translate_Agent,self).__init__()
-      
     
+    def process(self,customer):
+        if customer in busy_customers:
+            translation_q.put(customer)
+        else:
+            busy_customers.append(customer)  
+            customer.drivers_license_translation = assignment1.Drivers_License_\
+            Translation(customer.drivers_license)                                                                                       )
+            time.sleep(process_time)
+            busy_customers.remove(customer))
+            ### Check if it is in the other queue if not, put into license queue!
+            
 class printer():
     def __init__(self):
         self.state = 'idle'
