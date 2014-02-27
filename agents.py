@@ -33,11 +33,9 @@ def Isconsistent(docu):
         print "Fail from consistency test"
         return False
     
-
 class License_Agent(AbstractAgent):
     def __init__(self):
         super(License_Agent,self).__init__()
-    
     
     def check(self, customer):
         self.occupied = True

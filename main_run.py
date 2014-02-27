@@ -25,7 +25,7 @@ license_agent = 5
 translation_agent = 5
 eyetest_agent = 5
 
-#printers = [agents.printer() for i in range(printer_num)]
+printers = [printer() for i in range(printer_num)]
 
 first_name = 'Jin'
 last_name = 'Bak' 
