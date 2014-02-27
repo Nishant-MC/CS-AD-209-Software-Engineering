@@ -2,22 +2,17 @@ import time
 from Queue import Queue
 from datetime import date
 import assignment1
+import random
 
 ## Create queues 
-global license_q
+#global license_q
 license_q = Queue()
-global translation_q
+#global translation_q
 translation_q = Queue()
-global eye_test_q
+#global eye_test_q
 eye_test_q = Queue()
-global fail_q
+#global fail_q
 fail_q = Queue()
-
-class AbstractAgent(object):
-    def __init__(self):
-        self.ticket_num = None
-        self.process_time = None
-        self.occupied = False
 
 def Isconsistent(docu):
     first_name =set([x.first_name for x in docu if x is not None])
@@ -32,7 +27,13 @@ def Isconsistent(docu):
     else:
         print "Fail from consistency test"
         return False
-    
+
+class AbstractAgent(object):
+    def __init__(self):
+        self.ticket_num = None
+        self.occupied = False
+        
+
 class License_Agent(AbstractAgent):
     def __init__(self):
         super(License_Agent,self).__init__()
@@ -75,8 +76,12 @@ class License_Agent(AbstractAgent):
     def process(self,customer,process_time):
         time.sleep(process_time)
         printer_q(customer)
-        self.occupied = False            
-                    
+        self.occupied = False    
+    
+    def run(self):
+        pass
+        
+                        
 class Eye_test_Agent(AbstractAgent):
     def __init__(self):
         super(Eye_test_Agent,self).__init__()
@@ -129,4 +134,55 @@ class printer():
         success_q.put(customer)
         self.change_state()
         
+class reception():
+    def __init__(self,choice):
+        self.choice = choice 
+    
+    def smart_reception(self,customer):
+        if (customer.emirates_id==None or customer.drivers_license==None or customer.passport == None):
+            fail_q.put(customer)
+            return
+            
+        if (customer.emirates_id!=None and customer.drivers_license!=None and customer.passport != None\
+            and customer.eye_test != None and customer.drivers_license_translation!=None):
+            license_q.put(customer)
+            return
+        
+        elif (customer.eye_test==None):
+            eye_test_q.put(customer)
+            return
+        
+        elif (customer.drivers_license==None):
+            translation_q.put(customer)
+            
+            return
+        else:
+            fail_q.put(customer)
+    
+    def random_queue(self,customer):
+        random_number = random.randrange(0,3)
+        if random_number == 0:
+            license_q.put(customer)
+        elif random_number==1:
+            eye_test_q.put(customer)
+        elif random_number==2:
+            translation_q.put(customer)
+    
+    def license_first(self,customer):
+        license_q.put(customer)
+    
+    def place(self,customer):
+        if self.choice=="smart":
+            self.smart_reception(customer)
+        elif self.choice=="randomly":
+            self.random_queue(customer)
+        elif self.choice=="license":
+            self.license_first(customer)
+        else:
+            self.license_first(customer)           
+            
+            
+            
+            
+            
         

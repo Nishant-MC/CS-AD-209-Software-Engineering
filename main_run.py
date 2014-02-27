@@ -1,5 +1,6 @@
 from Queue import Queue
 import random  ##Usage: random.randrange()
+#from agents import *
 from agents import *
 import assignment1
 from datetime import date
@@ -40,8 +41,19 @@ eye_test=None
 DLT = None
 
 person = assignment1.Customer(id,DL,Pass,eye_test,DLT)
-license_q.put(person)
-a = License_Agent().check(person)
-print a
+receptionist = reception("smart")
+print fail_q.empty()
+print license_q.empty()
+print eye_test_q.empty()
+print translation_q.empty()
+print receptionist.choice
+receptionist.place(person)
+print fail_q.empty()
+print license_q.empty()
+print eye_test_q.empty()
+print translation_q.empty()
+#license_q.put(person)
+#a = License_Agent().check(person)
+
 def run(data):
     pass
