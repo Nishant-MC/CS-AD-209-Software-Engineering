@@ -1,59 +1,40 @@
 from Queue import Queue
-import random  ##Usage: random.randrange()
-#from agents import *
+import random
 from agents import *
 import assignment1
 from datetime import date
+import pickle
+import threading
 
-nationalities = ["United Sates","United Kingdom","Australia"]
-'''
-## Create queues 
-global license_q
-license_q = Queue()
-global translation_q
-translation_q = Queue()
-global eye_test_q
-eye_test_q = Queue()
-global fail_q
-fail_q = Queue()
-'''
-## Array to keep customers that are in process
-busy_customers = []
-
+## pickle example favorite_color = pickle.load( open( "save.p", "rb" ) )
 ## Number of each agent and printer(testing)
 printer_num = 5
 license_agent = 5
 translation_agent = 5
 eyetest_agent = 5
 
-printers = [printer() for i in range(printer_num)]
+print threading.active_count()
+for i in range(5):
+    a = License_Agent().run()
+    
+for i in range(5):
+    a = Eye_test_Agent().run()
+    
+for i in range(5):
+    a = Translate_Agent().run()
+    
 
-first_name = 'Jin'
-last_name = 'Bak' 
-nationality = "Korean"
-gender = "M"
-dateofbirth = "1991/04/20"
+    
 
-id = assignment1.Emirates_ID(first_name,last_name,nationality,gender,'asdf',date(2014, 2, 28),'12345')
-DL = assignment1.Drivers_License(first_name,last_name,nationality,gender,dateofbirth,date(2014, 2, 28))
-Pass = assignment1.Passport(first_name,last_name,nationality,gender,dateofbirth,date(2014, 2, 28))
-eye_test=None
-DLT = None
 
-person = assignment1.Customer(id,DL,Pass,eye_test,DLT)
+data = pickle.load(open("customer.dat","rb"))
 receptionist = reception("smart")
-print fail_q.empty()
-print license_q.empty()
-print eye_test_q.empty()
-print translation_q.empty()
-print receptionist.choice
-receptionist.place(person)
-print fail_q.empty()
-print license_q.empty()
-print eye_test_q.empty()
-print translation_q.empty()
-#license_q.put(person)
-#a = License_Agent().check(person)
+for i in data:
+    receptionist.place(i)
 
-def run(data):
+while threading.active_count()>1:
     pass
+
+print success_list
+
+print "yes"
