@@ -102,7 +102,7 @@ class License_Agent(AbstractAgent):
     def process(self,customer):
         #print 'Processing'
         process_time = random.randrange(120,301)
-        time.sleep(10) 
+        time.sleep(process_time) 
     
     def run(self,limit):
         while True:
@@ -136,7 +136,7 @@ class Eye_test_Agent(AbstractAgent):
                                                     customer.passport.gender,
                                                     customer.passport.date_of_birth,None)
             process_time = random.randrange(120,301)
-            time.sleep(5)
+            time.sleep(process_time)
             busy_customers_eye.remove(customer)
             if customer in eye_translation_list:
                 eye_translation_list.remove(customer)
@@ -169,7 +169,7 @@ class Translate_Agent(AbstractAgent):
             busy_customers_translate.append(customer)  
             customer.drivers_license_translation = assignment1.Drivers_License_Translation(customer.drivers_license)
             process_time = random.randrange(120,301)
-            time.sleep(4)
+            time.sleep(process_time)
             busy_customers_translate.remove(customer)
             if customer in eye_translation_list:
                 eye_translation_list.remove(customer)
@@ -210,11 +210,10 @@ class printer():
     
     def start_printing(self,customer):
         self.change_state()
-        time.sleep(2) # takes 300 seconds to print
+        time.sleep(300) # takes 300 seconds to print
         success_list.append(assignment1.UAE_Drivers_License(customer))
-        self.change_state()
         customer_list.remove(customer)
-        
+        self.change_state()
 
 ## Reception class -- Done! 
 class reception():
