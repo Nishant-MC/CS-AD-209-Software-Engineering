@@ -1,4 +1,4 @@
-#!/bin/python
+#!C:\Python27\pythonw.exe
 import os
 import json
 import logging
